@@ -319,6 +319,7 @@ a {
       -ms-flex-pack: center;
           justify-content: center;
   text-align: center;
+  color: wheat;
 }
 
 .banner .banner-row.center .row-letter {
@@ -333,7 +334,7 @@ a {
 
 .banner .banner-row .row-title,
 .banner .banner-row .row-letter {
-  font-size: 28rem;
+  font-size: 20rem;
   font-weight: 500;
   position: relative;
   letter-spacing: -0.8rem;
