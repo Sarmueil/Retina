@@ -2,7 +2,8 @@
 import React from 'react';
 import Hero from '../Hero/Hero';
 import Section from '../Section/Section';
-import Pin from '../Pin/Pin'
+import Pin from '../Pin/Pin';
+import Footer from '../Footer/Footer'
 
 const Homepage = () => {
   return (
@@ -10,6 +11,7 @@ const Homepage = () => {
   <Hero />
   <Section />
   <Pin />
+  <Footer />
   </>
   )
 }

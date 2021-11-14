@@ -10,7 +10,7 @@ import SecvideoF from '../Video/exploreF.mp4'
 
 const Pin = () => {
     return (
-        <div className="w-full bg-black pt-10 pb-10">
+        <div className="w-full bg-black pt-10 pb-20">
             <motion.h1 className="text-center text-5xl text-white font-medium tracking-wide mb-9" initial={{opacity:0}} animate={{opacity:1}} transition={{delay:8, duration:1}}>Explore trendy pins on Retina</motion.h1>
         <div className="flex justify-center items-center">
             <motion.div className="w-11/12 m-5 rounded-xl" initial={{x:-250, opacity:0}} animate={{x:0, opacity:1}} transition={{delay:6, duration:1}}>
