@@ -1,5 +1,6 @@
 {
   "name": "retina-frontend",
+  "proxy": "http://127.0.0.1:8000/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,6 +12,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.24.0",
     "framer-motion": "4.1.17",
     "history": "5",
     "react": "^17.0.2",
@@ -19,6 +21,7 @@
     "react-router-dom": "6",
     "react-scripts": "4.0.3",
     "react-scroll-motion": "^0.2.1",
+    "timeago.js": "^4.0.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -48,7 +51,6 @@
   "devDependencies": {
     "autoprefixer": "^9",
     "postcss": "^7",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat" 
-  },
-  "proxy":"http://localhost:8000/api"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+  }
 }

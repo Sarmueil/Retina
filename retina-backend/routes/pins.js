@@ -3,6 +3,7 @@ const router = express.Router()
 const pins = require('../models/pins')
 
 
+
 //creating pins
 router.post('/', async (req, res)=>{
     const newPin = new pins(req.body);
@@ -10,7 +11,7 @@ router.post('/', async (req, res)=>{
         const savedPin = await newPin.save();
          console.log(savedPin)
         res.status(200).json(savedPin)
-    }catch(err){
+    }catch(err){   
       res.status(500).json(err)
     }
 })
