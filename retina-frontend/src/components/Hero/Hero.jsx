@@ -36,7 +36,7 @@ const Hero = () => {
 
                  <div className="absolute top-80 text-center w-full z-20">
                       <motion.h1 className="text-yellow-600 font-extrabold" initial={{x:'-100vw', opacity:0}} animate={{fontSize:'7rem', color:'white', x:0, opacity:1}} transition={{duration:1.5}}>Pin It Share It</motion.h1>
-                      <h3 className="text-white font-poppins text-xl tracking-wide bg-yellow-500 font-medium pt-3 pb-3 pl-16 pr-16 cursor-pointer uppercase text-center rounded-full" style={{position:'absolute', left:'37rem'}}>Get started</h3>
+                      <h3 className="text-white font-poppins text-xl tracking-wide bg-yellow-500 font-medium pt-3 pb-3 pl-12 pr-12 cursor-pointer uppercase text-center rounded-full" style={{position:'absolute', left:'37rem'}}>Get started</h3>
                  </div> 
                  
                  <motion.div style={{position:'absolute', left:'60rem', top:'7rem'}} className="cursor-pointer"><motion.img drag dragConstraints={{left:100, top:100, bottom:100, right:10}} src="/images/map-red.png" style={{width:'200px', height:'200px'}} initial={{y:-250, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:1, duration:1.5}}/> </motion.div>

@@ -1,13 +1,15 @@
 
 import React from 'react';
 import Hero from '../Hero/Hero';
-import Section from '../Section/Section'
+import Section from '../Section/Section';
+import Pin from '../Pin/Pin'
 
 const Homepage = () => {
   return (
   <>
   <Hero />
   <Section />
+  <Pin />
   </>
   )
 }
