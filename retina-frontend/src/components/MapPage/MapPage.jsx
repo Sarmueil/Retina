@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom"
 import { motion } from 'framer-motion'
 import ReactMapGL, {Marker,Popup} from 'react-map-gl';
 import RoomIcon from '@mui/icons-material/Room';
@@ -169,10 +170,12 @@ const MapPage = () => {
        {/* header */}
        <div className="flex justify-between items-center sticky top-0 w-full z-90">
                     <div className="flex items-center w-1/2">
+                      <Link to ='/'>
                         <motion.div className="flex justify-between items-center" initial={{y:-250}} animate={{y:0}} transition={{delay:1, duration:1.5}}>
                              <RoomIcon style={{fontSize:'4rem', color:'black'}} className="mt-4 mb-7"/>
                             <img src='/images/retinab.png' alt="gridhouse-logo" className=" mt-4 mb-7 cursor-pointer"/>
                         </motion.div>
+                        </Link>
                     </div>
                     <div className="items-center cursor-pointer mr-8 hidden md:flex">
                         <div className="flex justify-center items-center bg-white p-2 rounded-xl">

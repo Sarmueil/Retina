@@ -2,12 +2,38 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import './Hero.css'
 import RoomIcon from '@mui/icons-material/Room';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import TextField from '@mui/material/TextField';
+
+
 // import MenuIcon from '@mui/icons-material/Menu';
 
 
   
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
 const Hero = () => {
+    const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [openlog, setOpenlog] = React.useState(false);
+  const handleOpenlog = () => setOpenlog(true);
+  const handleCloselog = () => setOpenlog(false);
+
     return (
         <header className="p-0 m-0 bg-transparent relative w-full">
            <div className="brand_bg">
@@ -28,21 +54,90 @@ const Hero = () => {
                         <MenuIcon className="h-8 text-white mr-2 mt-2 md:hidden"/>
                     </div> */}
                     <div className="items-center cursor-pointer mr-8 hidden md:flex">
-                        <h3 className="text-white font-poppins text-lg tracking-wide mr-5 pt-2 pb-2 pr-6 pl-6 rounded-sm border-2 border-gray-200 ">Log In</h3>
-                        <h3 className="text-yellow-600 font-poppins text-xl tracking-wide bg-gray-50 pt-2 pb-2 pr-6 pl-6 rounded-sm transition-all duration-500 hover:bg-transparent hover:border-gray-200 hover:text-white ">Join</h3>
+                        <h3 className="text-white font-poppins text-lg tracking-wide mr-5 pt-2 pb-2 pr-6 pl-6 rounded-sm border-2 border-gray-200 " onClick={handleOpenlog}>Log In</h3>
+                        <h3 className="text-yellow-600 font-poppins text-xl tracking-wide bg-gray-50 pt-2 pb-2 pr-6 pl-6 rounded-sm transition-all duration-500 hover:bg-transparent hover:border-gray-200 hover:text-white"onClick={handleOpen}>Join</h3>
                     </div>
                  </div>   
                  
 
                  <div className="absolute top-80 text-center w-full z-20">
                       <motion.h1 className="text-yellow-600 font-extrabold" initial={{x:'-100vw', opacity:0}} animate={{fontSize:'7rem', color:'white', x:0, opacity:1}} transition={{duration:1.5}}>Pin It Share It</motion.h1>
-                      <h3 className="text-white font-poppins text-xl tracking-wide bg-yellow-500 font-medium pt-3 pb-3 pl-12 pr-12 cursor-pointer uppercase text-center rounded-full" style={{position:'absolute', left:'37rem'}}>Get started</h3>
+                      <h3 className="text-white font-poppins text-xl tracking-wide bg-yellow-500 font-medium pt-3 pb-3 pl-12 pr-12 cursor-pointer uppercase text-center rounded-full" style={{position:'absolute', left:'37rem'}} onClick={handleOpen}>Get started</h3>
                  </div> 
                  
                  <motion.div style={{position:'absolute', left:'60rem', top:'7rem'}} className="cursor-pointer"><motion.img drag dragConstraints={{left:100, top:100, bottom:100, right:10}} src="/images/map-red.png" style={{width:'200px', height:'200px'}} initial={{y:-250, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:1, duration:1.5}}/> </motion.div>
                  {/* <motion.div style={{position:'absolute', left:'70rem', top:'20rem'}} className="cursor-pointer"><motion.img drag dragConstraints={{left:100, top:100, bottom:100,right:10}} src="/images/map-red.png" style={{width:'200px', height:'200px'}} initial={{y:-250, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:3, duration:1.5}}/> </motion.div> */}
                  <motion.div style={{position:'absolute', left:'70rem', top:'20rem'}} className="cursor-pointer"><motion.img drag dragConstraints={{left:100, top:100, bottom:20, right:0}} src="/images/map-red.png" style={{width:'200px', height:'200px'}} initial={{y:-250, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:5, duration:1.5}}/> </motion.div>
            </div>
+
+           {/* sign up modal */}
+           <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+              <div className="flex justify-center items-center flex-col">
+              <div className="flex justify-between items-center p-4 rounded-lg">
+                 <h1 className="text-3xl font-semibold tracking-wide text-black">Create New Account</h1>
+                  <img src="/images/map-red.png" alt="map-pin" style={{width:'6rem', height:'6.5rem'}}/>
+               </div>
+              <form>
+               <TextField fullWidth label="Username" id="fullWidth" style={{marginBottom:'0.5rem'}}/>
+               <TextField fullWidth label="Password" id="fullWidth" style={{marginBottom:'0.5rem'}}/>
+               <TextField fullWidth label="Repeat-Password" id="fullWidth" style={{marginBottom:'0.5rem'}}/>
+                 <div style={{border:'1px solid black', padding:'0.4rem'}}>
+                 <label className="text-gray-800">Display PIcture</label>
+               <input type="file" placeholder="Upload display picture" className="cursor-pointer"/>
+                 </div>
+               <button className="text-white font-poppins text-base tracking-wide mt-5 bg-black font-medium p-3 cursor-pointer text-center rounded-full" type='submit'>Create Account</button>
+           </form>
+           <p className="mt-3">Already have an account<span className="text-red-500 ml-3">Log in</span></p>
+              </div>
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
+
+    {/* login modal */}
+    <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openlog}
+        onClose={handleCloselog}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openlog}>
+          <Box sx={style}>
+              <div className="flex justify-center items-center flex-col">
+              <div className="flex justify-between items-center p-4 rounded-lg">
+                 <h1 className="text-3xl font-semibold tracking-wide text-black mr-20">Log in</h1>
+                  <img src="/images/map-red.png" alt="map-pin" style={{width:'6rem', height:'6.5rem'}}/>
+               </div>
+              <form>
+               <TextField fullWidth label="Username" id="fullWidth" style={{marginBottom:'0.5rem'}}/>
+               <TextField fullWidth label="Password" id="fullWidth" style={{marginBottom:'0.5rem'}}/>
+               <button className="text-white font-poppins text-base tracking-wide mt-5 bg-black font-medium p-3 cursor-pointer text-center rounded-full" type='submit'>Log in</button>
+           </form>
+           <p className="mt-3">Don't have an account?<span className="text-red-500 ml-3">Sign Up</span></p>
+              </div>
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
         </header>
     )
 }

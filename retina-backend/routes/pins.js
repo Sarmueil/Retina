@@ -8,6 +8,7 @@ const pins = require('../models/pins')
 router.post('/', async (req, res)=>{
     const newPin = new pins(req.body);
     try{
+        
         const savedPin = await newPin.save();
          console.log(savedPin)
         res.status(200).json(savedPin)
