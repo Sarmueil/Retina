@@ -31,6 +31,7 @@ const style = {
 const Hero = () => {
   const myStorage = window.localStorage;
   const [currentUsername, setCurrentUsername] = useState(myStorage.getItem("user"));
+  const [currentUserimage, setCurrentUserimage] = useState(myStorage.getItem("user_image"));
     const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -42,13 +43,30 @@ const Hero = () => {
   const [ name, setName ] = useState("")
   const [ email, setEmail ] = useState("")
   const [ password, setPassword] = useState("")
-
+  const [ image, setImage ] = useState("")
+  const [avatarurl, setAvatarurl ] = useState("")
  
   //avatar??
  const [success, setSuccess] = useState(false);
  const [error, setError] = useState(false);
 //  const [showlogin , setShowlogin ]= useState(false);
 
+const postImage =()=>{
+  const data = new FormData()
+  data.append('file',image)
+  data.append('upload_preset',"retina")
+  data.append('cloud_name', "sarmueil")
+  fetch("https://api.cloudinary.com/v1_1/sarmueil/image/upload", {
+    method:'post',
+    body:data
+  }).then(res=> res.json())
+   .then(data=>{
+    setAvatarurl(data.url)
+   })
+   .catch(err=>{
+     console.log(err)
+   })
+}
 
  const handleSubmit = async(e)=>{
    e.preventDefault()
@@ -56,6 +74,7 @@ const Hero = () => {
      username:name,
      email:email,
      password:password,
+     avatar:avatarurl,
      //avatar??
    }
    console.log(newUser)
@@ -82,9 +101,7 @@ const Hero = () => {
                         </motion.div>
                        <div className="items-center mt-9 ml-16 mb-7 hidden md:flex">
                             <h3 className="text-white font-poppins text-lg tracking-wide mr-6 cursor-pointer transition-all duration-500 hover:text-yellow-400">About</h3>
-                            <Link to="/map">
                             <h3 className="text-white font-poppins text-lg tracking-wide mr-6 cursor-pointer transition-all duration-500 hover:text-yellow-400">Explore</h3>
-                            </Link>
                             <h3 className="text-white font-poppins text-lg tracking-wide mr-6 cursor-pointer transition-all duration-500 hover:text-yellow-400">Experience</h3>
                             <h3 className="text-white font-poppins text-lg tracking-wide mr-6 cursor-pointer transition-all duration-500 hover:text-yellow-400">Blog</h3>
                        </div>
@@ -94,7 +111,7 @@ const Hero = () => {
                     </div> */}
                     <div className="items-center cursor-pointer mr-8 hidden md:flex">
                         {/* <h3 className="text-white font-poppins text-lg tracking-wide mr-5 pt-2 pb-2 pr-6 pl-6 rounded-sm border-2 border-gray-200 ">Log In</h3> */}
-                        <Login myStorage={myStorage} setCurrentUsername={setCurrentUsername}/>
+                        <Login myStorage={myStorage} setCurrentUsername={setCurrentUsername} setCurrentUserimage={setCurrentUserimage}/>
                         <h3 className="text-yellow-600 font-poppins text-xl tracking-wide bg-gray-50 pt-2 pb-2 pr-6 pl-6 rounded-sm transition-all duration-500 hover:bg-transparent hover:border-gray-200 hover:text-white"onClick={handleOpen}>Join</h3>
                     </div>
                  </div>   
@@ -136,12 +153,12 @@ const Hero = () => {
                <TextField fullWidth label="Username" style={{marginBottom:'0.5rem'}} onChange={(e)=>setName(e.target.value)}/>
                <TextField fullWidth label="Email" style={{marginBottom:'0.5rem'}} onChange={(e)=>setEmail(e.target.value)}/>
                <TextField fullWidth label="Password"  style={{marginBottom:'0.5rem'}} onChange={(e)=>setPassword(e.target.value)}/>
-                 <div style={{border:'1px solid black', padding:'0.4rem'}}>
-                 <label className="text-gray-800">Display PIcture</label>
-               <input type="file" placeholder="Upload display picture" className="cursor-pointer"/>
-                 </div>
                <button className="text-white font-poppins text-base tracking-wide mt-5 bg-black font-medium p-3 cursor-pointer text-center rounded-full" type='submit'>Create Account</button>
            </form>
+           <div style={{border:'1px solid black', padding:'0.4rem'}}>
+                 <button className="text-gray-800" onClick={()=>postImage()}>Upload Image</button>
+               <input type="file" placeholder="Upload display picture" className="cursor-pointer" onChange={(e)=>setImage(e.target.files[0])}/>
+                 </div>
            <p className="mt-3">Already have an account<span className="text-red-500 ml-3 cursor-pointer" onClick={handleOpenlog}>Log in</span></p>
               </div>
           </Box>

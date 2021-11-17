@@ -26,7 +26,7 @@ const style = {
 
 
 
- const Login = ({ myStorage,setCurrentUsername }) => {
+ const Login = ({ myStorage,setCurrentUsername,setCurrentUserimage }) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [open, setOpen] = useState(false);
@@ -47,7 +47,9 @@ const style = {
          const res = await axios.post('/api/user/login',user);
          console.log(res.data)
          myStorage.setItem('user', res.data.username);
+         myStorage.setItem('user_image', res.data.avatar);
          setCurrentUsername(res.data.username)
+         setCurrentUserimage(res.data.avatar)
            setSuccess(true)
         }catch(err){
           console.log(err)
