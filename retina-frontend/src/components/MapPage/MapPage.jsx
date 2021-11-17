@@ -30,7 +30,7 @@ const MapPage = () => {
           const res = await axios.get("/api/pins")
           setPins(res.data)
        }catch(err){
-         console.log(err)
+         console.log(err)  
        }
     }
     getPins()
