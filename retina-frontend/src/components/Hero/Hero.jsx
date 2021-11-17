@@ -29,7 +29,8 @@ const style = {
   };
 
 const Hero = () => {
-  const myStorage = window.localStorage
+  const myStorage = window.localStorage;
+  const [currentUsername, setCurrentUsername] = useState(myStorage.getItem("user"));
     const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -93,7 +94,7 @@ const Hero = () => {
                     </div> */}
                     <div className="items-center cursor-pointer mr-8 hidden md:flex">
                         {/* <h3 className="text-white font-poppins text-lg tracking-wide mr-5 pt-2 pb-2 pr-6 pl-6 rounded-sm border-2 border-gray-200 ">Log In</h3> */}
-                        <Login myStorage={myStorage}/>
+                        <Login myStorage={myStorage} setCurrentUsername={setCurrentUsername}/>
                         <h3 className="text-yellow-600 font-poppins text-xl tracking-wide bg-gray-50 pt-2 pb-2 pr-6 pl-6 rounded-sm transition-all duration-500 hover:bg-transparent hover:border-gray-200 hover:text-white"onClick={handleOpen}>Join</h3>
                     </div>
                  </div>   

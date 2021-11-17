@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import { motion } from 'framer-motion'
 import ReactMapGL, {Marker,Popup} from 'react-map-gl';
 import RoomIcon from '@mui/icons-material/Room';
@@ -17,12 +17,15 @@ import InputLabel from '@mui/material/InputLabel';
 
  
 const MapPage = () => {
+  const myStorage = window.localStorage;
+  const [currentUsername, setCurrentUsername] = useState(myStorage.getItem("user"));
   const [pins, setPins] = useState([])
    const [pinid, setPinid] = useState(null)
    const [newplace, setNewplace] = useState(null)
    const [location, setLocation ] = useState(null)
    const [caption, setCaption ] = useState(null)
    const [rating, setRating ] = useState(0)
+   const [loggedout, setLoggedout] = useState(false)
 
   useEffect(()=>{  
     const getPins = async()=>{
@@ -35,7 +38,7 @@ const MapPage = () => {
     }
     getPins()
   })
-  const cuurentUser = "Tonia";
+  const cuurentUser = currentUsername;
     const [viewport, setViewport] = useState({   
         width: "100vw",
         height: "100vh",
@@ -75,6 +78,11 @@ const MapPage = () => {
         }catch(err){
           console.log(err)
         }
+      }
+      const handleLogout =()=>{
+          setCurrentUsername(null);
+          myStorage.removeItem("user");
+          setLoggedout(true)
       }
     return (
         <div>
@@ -182,7 +190,8 @@ const MapPage = () => {
                              <Avatar alt="Cindy Baker" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" />
                              <h3 className="text-base text-black ml-2">Hello {cuurentUser}</h3>
                         </div>
-                        <h3 className="text-white font-poppins text-xl tracking-wide bg-black pt-2 pb-2 pr-3 pl-3 ml-5 rounded-lg transition-all duration-500">Log Out</h3>
+                        <h3 className="text-white font-poppins text-xl tracking-wide bg-black pt-2 pb-2 pr-3 pl-3 ml-5 rounded-lg transition-all duration-500" onClick={handleLogout}>Log Out</h3>
+                        {loggedout && (<Navigate to="/"/>)}
                     </div>
                  </div>
     </ReactMapGL>

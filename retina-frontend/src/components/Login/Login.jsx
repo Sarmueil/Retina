@@ -1,6 +1,7 @@
 import React, {useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from "react-router-dom"
+import { Link, Navigate} from "react-router-dom"
+import { Redirect } from 'react-router'
 import axios from "axios"
 import RoomIcon from '@mui/icons-material/Room';
 import Backdrop from '@mui/material/Backdrop';
@@ -25,7 +26,7 @@ const style = {
 
 
 
- const Login = ({ myStorage }) => {
+ const Login = ({ myStorage,setCurrentUsername }) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [open, setOpen] = useState(false);
@@ -43,8 +44,10 @@ const style = {
         }
         console.log(user)
         try{
-         const res = await axios.post('/api/user/login',user); 
-         myStorage.setItem("user", res.data.username)
+         const res = await axios.post('/api/user/login',user);
+         console.log(res.data)
+         myStorage.setItem('user', res.data.username);
+         setCurrentUsername(res.data.username)
            setSuccess(true)
         }catch(err){
           console.log(err)
@@ -71,7 +74,7 @@ const style = {
           <Box sx={style}>
             
  <div className="flex justify-center items-center flex-col">
- {success && <p className="text-base text-green-500 tracking-wide">Account sucessfully created, Please Log in</p>}
+ {success && (<Navigate to="/map"/>)}
  {error && <p className="text-base text-red-500 tracking-wide">Something went wrong, please try again</p>} 
  <div className="flex justify-between items-center p-4 rounded-lg">
     <h1 className="text-3xl font-semibold tracking-wide text-black mr-20">Log in</h1>
