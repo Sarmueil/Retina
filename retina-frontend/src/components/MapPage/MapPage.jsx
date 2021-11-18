@@ -28,17 +28,11 @@ const MapPage = () => {
    const [rating, setRating ] = useState(0)
    const [loggedout, setLoggedout] = useState(false)
 
-  useEffect(()=>{  
-    const getPins = async()=>{
-       try{
-          const res = await axios.get("/api/pins")
-          setPins(res.data)
-       }catch(err){
-         console.log(err)  
-       }
-    }
-    getPins()
-  })
+   const [ pinmedia, setPinmedia ] = useState("")
+  const [pinurl, setPinurl ] = useState("")
+  const [uploadsucess, setUploadsucesss] = useState(false)
+  const [uploaderror, setUploaderror] = useState(false)
+
   const cuurentUser = currentUsername;
     const [viewport, setViewport] = useState({   
         width: "100vw",
@@ -59,10 +53,32 @@ const MapPage = () => {
            lat,
          })
       }
+
+      const postMedia =()=>{
+        const data = new FormData()
+        data.append('file',pinmedia)
+        data.append('upload_preset',"retina")
+        data.append('cloud_name', "sarmueil")
+        fetch("https://api.cloudinary.com/v1_1/sarmueil/image/upload", {
+          method:'post',
+          body:data
+        }).then(res=> res.json())
+         .then(data=>{
+          setPinurl(data.url)
+          console.log(data.url)
+          setUploadsucesss(true)
+         })
+         .catch(err=>{
+           console.log(err)
+           setUploaderror(true)
+         })
+      }
+
       const handleSubmit = async (e)=>{
         e.preventDefault()
         const newPin = {
           postedBy:cuurentUser,
+          media:pinurl,
           location,
           caption,
           rating,
@@ -85,6 +101,19 @@ const MapPage = () => {
           myStorage.removeItem("user");
           setLoggedout(true)
       }
+
+  useEffect(()=>{  
+    const getPins = async()=>{
+       try{
+          const res = await axios.get("/api/pins")
+          setPins(res.data)
+       }catch(err){
+         console.log(err)  
+       }
+    }
+    getPins()
+  })
+  
     return (
         <div>
            <ReactMapGL
@@ -93,12 +122,12 @@ const MapPage = () => {
       onViewportChange={nextViewport => setViewport(nextViewport)}
       mapStyle="mapbox://styles/sarmueil/ckvo7ol5wm4u515mpfkeb47na"
       onDblClick={handleAddClick}
-      transitionDuration="200"
+      
     >
       {pins.map((pin)=>(
          <div key={pin._id}>
          <Marker latitude={pin.lat} longitude={pin.long} offsetLeft={-viewport.zoom * 3.5} offsetTop={-viewport.zoom * 7}>
-       <RoomIcon style={{fontSize:viewport.zoom * 7, color: pin.postedBy === cuurentUser ? "black":"red", cursor:'pointer'}} onClick={()=>handleClick(pin._id,pin.lat,pin.long)}/>
+       <RoomIcon style={{fontSize:viewport.zoom * 7, zIndex:'10', color: pin.postedBy === cuurentUser ? "black":"red", cursor:'pointer'}} onClick={()=>handleClick(pin._id,pin.lat,pin.long)}/>
       </Marker>
       {pin._id === pinid && (
         <Popup
@@ -108,20 +137,21 @@ const MapPage = () => {
         closeOnClick={false}
         onClose={()=>setPinid(null)}
         anchor="left" >
-          <div className="flex justify-center items-center flex-col">
-        <div className="bg-transparent rounded-2xl h-96" style={{width:'40vw'}}>    
+          <div className="flex justify-center items-center flex-col z-40" style={{width:'30vw'}}>
+        <div className="bg-transparent rounded-2xl h-96" style={{width:'30vw'}}>    
            <div className="bg-black w-full rounded-xl" >
-            <video autoPlay loop className="object-contain h-96"> 
-            <source src={Mapvid} type="video/mp4"/>
-            </video>
+            {/* <video autoPlay loop className="object-contain h-96"> 
+            <source src='' type="video/mp4"/>
+            </video> */}
+            <img src={pin.media} alt="map_image" className="object-cover h-96 w-full"/>
            </div> 
         </div>
-        <div className="bg-white pt-3 pb-3" style={{width:'40vw'}}>
+        <div className="bg-white pt-3 pb-3" style={{width:'30vw'}}>
              <div className="h-full">
                <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                       <Avatar alt="Remy Sharp" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" />
-                       <h3 className="text-base tracking-wide ml-2 text-black">{pin.postedBy}</h3>
+                       <Avatar alt="user_image" src={currentUserimage} />
+                       <h3 className="text-base tracking-wide ml-2 text-black">{pin.postedBy}</h3> 
                     </div>
                     <MoreHorizIcon />
                </div>
@@ -152,12 +182,11 @@ const MapPage = () => {
            <div className="bg-transparent rounded-2xl" style={{width:'35vw', height:'65vh'}}>
                <div className="flex justify-between items-center p-4 rounded-lg">
                  <h1 className="text-3xl font-semibold tracking-wide text-black">Create New Pin</h1>
-                  <img src="/images/map-red.png" alt="map-pin" style={{width:'6rem', height:'6.5rem'}}/>
+                  <img src="/images/map-red.png" alt="map-pin" style={{width:'6rem', height:'6.5rem'}} onClick={()=>setNewplace(null)}/>
                </div>
            <form onSubmit={handleSubmit}>
                <TextField fullWidth label="Location" id="fullWidth" style={{marginBottom:'0.5rem'}} onChange={(e)=>setLocation(e.target.value)}/>
                {/* <TextField fullWidth label="Add file" id="fullWidth" style={{marginBottom:'0.5rem'}}/> */}
-               <input type="file" placeholder="choose file" />
                <TextField label="Caption" fullWidth id="outlined-multiline-static" multiline rows={4} id="outlined-multiline-flexible" style={{marginRight:'1.5rem'}} onChange={(e)=>setCaption(e.target.value)}/>
                <InputLabel id="demo-simple-select-label">Rating</InputLabel>
                <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Rating" style={{width:'8rem'}} onChange={(e)=>setRating(e.target.value)}>
@@ -169,6 +198,12 @@ const MapPage = () => {
                </Select>
                <button className="text-white font-poppins text-base tracking-wide w-32 bg-black font-medium p-3 cursor-pointer text-center rounded-full ml-5" type='submit'>Add Pin</button>
            </form>
+           <div style={{border:'1px solid black', padding:'0.4rem', marginTop:'1rem'}}>
+                 <button className="text-white rounded-full bg-black p-2 mr-3"  onClick={()=>postMedia()}>Upload</button>
+                 <input type="file" placeholder="choose file" onChange={(e)=>setPinmedia(e.target.files[0])}/>
+                 {uploadsucess && <p className="text-base text-green-500 tracking-wide">Upload Sucessful</p>}
+               {uploaderror && <p className="text-base text-red-500 tracking-wide">Upload Failed</p>}
+             </div>
            <p className="text-black text-base tracking-wide mt-2 ">Click on the red map pin above to create your pin</p>
            </div>
            </div>

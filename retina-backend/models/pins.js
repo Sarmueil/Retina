@@ -4,8 +4,8 @@ const PinSchema = new mongoose.Schema({
 //    profilePic: { type: String },
    postedBy: { type:String, ref: 'User' }, //first and second related
    caption: { type: String, trim: true },
-   image: {type:String},
-   video: {type:String},
+   media: {type:String,required:true},
+//    video: {type:String},
    rating:{type:Number, min:0, max:5},
    lat:{type:Number, required:true},
    long:{type:Number, required:true},

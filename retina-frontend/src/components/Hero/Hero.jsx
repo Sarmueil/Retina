@@ -49,6 +49,9 @@ const Hero = () => {
   //avatar??
  const [success, setSuccess] = useState(false);
  const [error, setError] = useState(false);
+ const [uploadsucess, setUploadsucesss] = useState(false)
+ const [uploaderror, setUploaderror] = useState(false)
+ 
 //  const [showlogin , setShowlogin ]= useState(false);
 
 const postImage =()=>{
@@ -62,9 +65,11 @@ const postImage =()=>{
   }).then(res=> res.json())
    .then(data=>{
     setAvatarurl(data.url)
+    setUploadsucesss(true)
    })
    .catch(err=>{
      console.log(err)
+     setUploaderror(true)
    })
 }
 
@@ -155,9 +160,11 @@ const postImage =()=>{
                <TextField fullWidth label="Password"  style={{marginBottom:'0.5rem'}} onChange={(e)=>setPassword(e.target.value)}/>
                <button className="text-white font-poppins text-base tracking-wide mt-5 bg-black font-medium p-3 cursor-pointer text-center rounded-full" type='submit'>Create Account</button>
            </form>
-           <div style={{border:'1px solid black', padding:'0.4rem'}}>
+           <div style={{border:'1px solid black', padding:'0.4rem', marginTop:'1rem'}}>
                  <button className="text-gray-800" onClick={()=>postImage()}>Upload Image</button>
                <input type="file" placeholder="Upload display picture" className="cursor-pointer" onChange={(e)=>setImage(e.target.files[0])}/>
+               {uploadsucess && <p className="text-base text-green-500 tracking-wide">Upload Sucessful</p>}
+               {uploaderror && <p className="text-base text-green-500 tracking-wide">Upload Failed</p>}
                  </div>
            <p className="mt-3">Already have an account<span className="text-red-500 ml-3 cursor-pointer" onClick={handleOpenlog}>Log in</span></p>
               </div>
